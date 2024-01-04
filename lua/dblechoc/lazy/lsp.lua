@@ -11,6 +11,7 @@ return {
 		"L3MON4D3/LuaSnip",
 		"saadparwaiz1/cmp_luasnip",
 		"j-hui/fidget.nvim",
+		"zbirenbaum/copilot-cmp",
 	},
 	config = function()
 		local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
@@ -19,13 +20,15 @@ return {
 			vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
 		end
 
-		local lsp_capabilities = require("cmp_nvim_lsp").default_capabilities()
+		local cmp = require("cmp")
+		local cmp_select = { behavior = cmp.SelectBehavior.Select }
 
-		local default_setup = function(server_name)
-			require("lspconfig")[server_name].setup({
-				capabilities = lsp_capabilities,
-			})
-		end
+		local capabilities = vim.tbl_deep_extend(
+			"force",
+			{},
+			vim.lsp.protocol.make_client_capabilities(),
+			require("cmp_nvim_lsp").default_capabilities()
+		)
 
 		require("fidget").setup()
 		require("mason").setup()
@@ -42,11 +45,16 @@ return {
 			},
 			automatic_installation = true,
 			handlers = {
-				default_setup,
+				function(server_name)
+					require("lspconfig")[server_name].setup({
+						capabilities = capabilities,
+					})
+				end,
 
 				["lua_ls"] = function()
 					local lspconfig = require("lspconfig")
 					lspconfig.lua_ls.setup({
+						capabilities = capabilities,
 						settings = {
 							Lua = {
 								diagnostics = {
@@ -58,9 +66,6 @@ return {
 				end,
 			},
 		})
-
-		local cmp = require("cmp")
-		local cmp_select = { behavior = cmp.SelectBehavior.Select }
 
 		cmp.setup({
 			snippet = {
@@ -75,10 +80,14 @@ return {
 			mapping = cmp.mapping.preset.insert({
 				["<C-p>"] = cmp.mapping.select_prev_item(cmp_select),
 				["<C-n>"] = cmp.mapping.select_next_item(cmp_select),
-				["<CR>"] = cmp.mapping.confirm({ select = true }),
+				["<CR>"] = cmp.mapping.confirm({
+					behavior = cmp.ConfirmBehavior.Replace,
+					select = false,
+				}),
 				["<C-Space>"] = cmp.mapping.complete(),
 			}),
 			sources = cmp.config.sources({
+				{ name = "copilot" },
 				{ name = "nvim_lsp" },
 				{ name = "luasnip" },
 			}, {
