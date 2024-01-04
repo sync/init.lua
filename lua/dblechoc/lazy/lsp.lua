@@ -12,6 +12,7 @@ return {
 		"saadparwaiz1/cmp_luasnip",
 		"j-hui/fidget.nvim",
 		"zbirenbaum/copilot-cmp",
+		"WhoIsSethDaniel/mason-tool-installer.nvim",
 	},
 	config = function()
 		local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
@@ -32,7 +33,7 @@ return {
 
 		require("fidget").setup()
 		require("mason").setup()
-		require("mason-lspconfig").setup({
+		require("mason-tool-installer").setup({
 			ensure_installed = {
 				"eslint",
 				"golangci_lint_ls",
@@ -42,7 +43,13 @@ return {
 				"tailwindcss",
 				"tsserver",
 				"yamlls",
+				-- formatter
+				"prettier",
+				"stylua",
 			},
+			auto_update = true,
+		})
+		require("mason-lspconfig").setup({
 			automatic_installation = true,
 			handlers = {
 				function(server_name)
