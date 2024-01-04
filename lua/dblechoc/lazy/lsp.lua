@@ -46,6 +46,7 @@ return {
 				-- formatter
 				"prettier",
 				"stylua",
+				"goimports",
 			},
 			auto_update = true,
 		})

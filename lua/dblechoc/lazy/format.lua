@@ -23,6 +23,7 @@ return {
 				graphql = { "prettier" },
 				handlebars = { "prettier" },
 				lua = { "stylua" },
+				go = { "goimports", "gofmt" },
 			},
 			format_on_save = {
 				lsp_fallback = true,
