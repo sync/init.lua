@@ -17,6 +17,12 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
 	spec = "dblechoc.lazy",
 	change_detection = { notify = false },
+	install = {
+		colorscheme = { "catppuccin" },
+	},
+	checker = {
+		enabled = true,
+	},
 })
 
 local augroup = vim.api.nvim_create_augroup
