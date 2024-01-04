@@ -51,6 +51,26 @@ return {
 					})
 				end,
 
+				["eslint"] = function()
+					local lspconfig = require("lspconfig")
+					lspconfig.eslint.setup({
+						capabilities = capabilities,
+						on_attach = function(client, bufnr)
+							vim.api.nvim_create_autocmd("BufWritePre", {
+								buffer = bufnr,
+								callback = function()
+									local diag = vim.diagnostic.get(
+										bufnr,
+										{ namespace = vim.lsp.diagnostic.get_namespace(client.id) }
+									)
+									if #diag > 0 then
+										vim.cmd("EslintFixAll")
+									end
+								end,
+							})
+						end,
+					})
+				end,
 				["lua_ls"] = function()
 					local lspconfig = require("lspconfig")
 					lspconfig.lua_ls.setup({
