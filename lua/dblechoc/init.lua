@@ -18,7 +18,7 @@ require("lazy").setup({
 	spec = "dblechoc.lazy",
 	change_detection = { notify = false },
 	install = {
-		colorscheme = { "catppuccin" },
+		colorscheme = { "catppuccin-macchiato" },
 	},
 	checker = {
 		enabled = true,
