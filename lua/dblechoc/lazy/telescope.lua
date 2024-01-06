@@ -11,7 +11,23 @@ return {
 		},
 	},
 	config = function()
-		require("telescope").setup({})
+		require("telescope").setup({
+			pickers = {
+				find_files = {
+					find_command = { "rg", "--files", "--iglob", "!.git", "--hidden" },
+				},
+				live_grep = {
+					additional_args = function()
+						return { "--hidden", "--glob", "!**/.git/*" }
+					end,
+				},
+				grep_string = {
+					additional_args = function()
+						return { "--hidden", "--glob", "!**/.git/*" }
+					end,
+				},
+			},
+		})
 
 		local builtin = require("telescope.builtin")
 		vim.keymap.set("n", "<leader>pf", builtin.find_files, {})
