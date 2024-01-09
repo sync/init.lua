@@ -10,4 +10,5 @@ return {
 		},
 	},
 	"eandrju/cellular-automaton.nvim",
+	"wakatime/vim-wakatime",
 }
