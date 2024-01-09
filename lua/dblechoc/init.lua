@@ -84,6 +84,24 @@ autocmd("LspAttach", {
 	end,
 })
 
+-- close some filetypes with <q>
+autocmd("FileType", {
+	group = dblechocGroup,
+	pattern = {
+		"help",
+		"lspinfo",
+		"man",
+		"notify",
+		"qf",
+		"query",
+		"checkhealth",
+	},
+	callback = function(event)
+		vim.bo[event.buf].buflisted = false
+		vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true })
+	end,
+})
+
 vim.g.netrw_browse_split = 0
 vim.g.netrw_banner = 0
 vim.g.netrw_winsize = 25
