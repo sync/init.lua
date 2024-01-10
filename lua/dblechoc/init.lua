@@ -105,3 +105,7 @@ autocmd("FileType", {
 vim.g.netrw_browse_split = 0
 vim.g.netrw_banner = 0
 vim.g.netrw_winsize = 25
+
+-- Builtin Packages
+-- cfilter plugin allows filtering down an existing quickfix list
+vim.cmd.packadd("cfilter")
