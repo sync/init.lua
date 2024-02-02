@@ -17,4 +17,5 @@ return {
 			vim.cmd([[packadd wakatime/vim-wakatime]])
 		end,
 	},
+	"gpanders/editorconfig.nvim",
 }

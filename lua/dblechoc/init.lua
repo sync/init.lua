@@ -1,29 +1,7 @@
 require("dblechoc.set")
 require("dblechoc.remap")
 
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
-	vim.fn.system({
-		"git",
-		"clone",
-		"--filter=blob:none",
-		"https://github.com/folke/lazy.nvim.git",
-		"--branch=stable", -- latest stable release
-		lazypath,
-	})
-end
-vim.opt.rtp:prepend(lazypath)
-
-require("lazy").setup({
-	spec = "dblechoc.lazy",
-	change_detection = { notify = false },
-	install = {
-		colorscheme = { "catppuccin-macchiato" },
-	},
-	checker = {
-		enabled = true,
-	},
-})
+require("dblechoc.lazy_init")
 
 local augroup = vim.api.nvim_create_augroup
 local dblechocGroup = augroup("dblechoc", {})
@@ -34,6 +12,12 @@ local yank_group = augroup("HighlightYank", {})
 function R(name)
 	require("plenary.reload").reload_module(name)
 end
+
+vim.filetype.add({
+	extension = {
+		templ = "templ",
+	},
+})
 
 autocmd("TextYankPost", {
 	group = yank_group,
@@ -54,8 +38,8 @@ autocmd({ "BufWritePre" }, {
 
 autocmd("LspAttach", {
 	group = dblechocGroup,
-	callback = function(ev)
-		local opts = { buffer = ev.buf }
+	callback = function(e)
+		local opts = { buffer = e.buf }
 
 		vim.keymap.set("n", "gd", function()
 			vim.lsp.buf.definition()
@@ -80,6 +64,12 @@ autocmd("LspAttach", {
 		end, opts)
 		vim.keymap.set("i", "<C-h>", function()
 			vim.lsp.buf.signature_help()
+		end, opts)
+		vim.keymap.set("n", "[d", function()
+			vim.diagnostic.goto_next()
+		end, opts)
+		vim.keymap.set("n", "]d", function()
+			vim.diagnostic.goto_prev()
 		end, opts)
 	end,
 })
