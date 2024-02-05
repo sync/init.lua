@@ -31,3 +31,11 @@ vim.opt.updatetime = 50
 vim.opt.colorcolumn = "120"
 
 vim.opt.clipboard = "unnamedplus"
+
+-- Open splits more naturally
+vim.opt.splitbelow = true
+vim.opt.splitright = true
+
+-- ignore case in Vim search
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
