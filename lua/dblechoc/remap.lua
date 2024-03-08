@@ -39,3 +39,10 @@ vim.keymap.set("n", "<leader>mr", "<cmd>CellularAutomaton make_it_rain<CR>")
 
 -- lazy
 vim.keymap.set("n", "<leader>l", "<cmd>Lazy<CR>")
+
+-- hardmode
+for _, mode in pairs({ "n", "i", "v", "x" }) do
+	for _, key in pairs({ "<Up>", "<Down>", "<Left>", "<Right>" }) do
+		vim.keymap.set(mode, key, "<nop>")
+	end
+end
