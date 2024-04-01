@@ -8,6 +8,8 @@ return {
 			"marilari88/neotest-vitest",
 			"nvim-neotest/neotest-plenary",
 			"nvim-neotest/neotest-go",
+			"nvim-neotest/nvim-nio",
+			"nvim-neotest/neotest-jest",
 		},
 		config = function()
 			local neotest = require("neotest")
