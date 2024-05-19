@@ -65,7 +65,7 @@ return {
 				"stylua",
 				"goimports",
 			},
-			auto_update = true,
+			auto_update = false,
 		})
 		require("mason-lspconfig").setup({
 			automatic_installation = true,
