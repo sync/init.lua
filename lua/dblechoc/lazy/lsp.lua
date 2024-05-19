@@ -31,6 +31,14 @@ return {
 			require("cmp_nvim_lsp").default_capabilities()
 		)
 
+		local on_attach = function(client, bufnr)
+			local inlay_hint = vim.lsp.buf.inlay_hint or vim.lsp.inlay_hint
+
+			if inlay_hint ~= nil and client.supports_method("textDocument/inlayHint") then
+				inlay_hint.enable(true, { bufnr = bufnr })
+			end
+		end
+
 		local baseDefinitionHandler = vim.lsp.handlers["textDocument/definition"]
 
 		local filter = function(arr, fn)
@@ -73,6 +81,7 @@ return {
 				function(server_name)
 					require("lspconfig")[server_name].setup({
 						capabilities = capabilities,
+						on_attach = on_attach,
 					})
 				end,
 
@@ -113,7 +122,20 @@ return {
 
 					lspconfig.tsserver.setup({
 						capabilities = capabilities,
+						on_attach = on_attach,
 						handlers = handlers,
+						init_options = {
+							preferences = {
+								includeInlayEnumMemberValueHints = true,
+								includeInlayFunctionLikeReturnTypeHints = true,
+								includeInlayFunctionParameterTypeHints = true,
+								includeInlayParameterNameHints = "literal",
+								includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+								includeInlayPropertyDeclarationTypeHints = true,
+								includeInlayVariableTypeHints = true,
+								includeInlayVariableTypeHintsWhenTypeMatchesName = true,
+							},
+						},
 					})
 				end,
 
@@ -122,6 +144,7 @@ return {
 					lspconfig.eslint.setup({
 						capabilities = capabilities,
 						on_attach = function(client, bufnr)
+							on_attach(client, bufnr)
 							vim.api.nvim_create_autocmd("BufWritePre", {
 								buffer = bufnr,
 								callback = function()
