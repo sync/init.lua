@@ -61,7 +61,6 @@ return {
 		require("mason-tool-installer").setup({
 			ensure_installed = {
 				"eslint",
-				"golangci_lint_ls",
 				"gopls",
 				"lua_ls",
 				"rust_analyzer",
@@ -143,6 +142,12 @@ return {
 					local lspconfig = require("lspconfig")
 					lspconfig.eslint.setup({
 						capabilities = capabilities,
+						settings = {
+							workingDirectories = { mode = "auto" },
+							experimental = {
+								useFlatConfig = false,
+							},
+						},
 						on_attach = function(client, bufnr)
 							-- on_attach(client, bufnr)
 							vim.api.nvim_create_autocmd("BufWritePre", {

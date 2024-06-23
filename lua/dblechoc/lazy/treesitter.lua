@@ -16,6 +16,8 @@ return {
 				"bash",
 				"markdown",
 				"markdown_inline",
+				"swift",
+				"kotlin",
 			},
 
 			-- Install parsers synchronously (only applied to `ensure_installed`)
