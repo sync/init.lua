@@ -30,7 +30,7 @@ vim.opt.updatetime = 50
 
 vim.opt.colorcolumn = "120"
 
-vim.opt.clipboard = "unnamedplus"
+vim.opt.clipboard:append({ "unnamed", "unnamedplus" })
 
 -- Open splits more naturally
 vim.opt.splitbelow = true

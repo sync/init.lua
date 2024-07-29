@@ -9,7 +9,6 @@ return {
 			"JoosepAlviste/nvim-ts-context-commentstring",
 		},
 	},
-	"eandrju/cellular-automaton.nvim",
 	{
 		"wakatime/vim-wakatime",
 		lazy = false,
@@ -17,5 +16,4 @@ return {
 			vim.cmd([[packadd wakatime/vim-wakatime]])
 		end,
 	},
-	"gpanders/editorconfig.nvim",
 }
