@@ -31,14 +31,6 @@ return {
 			require("cmp_nvim_lsp").default_capabilities()
 		)
 
-		-- local on_attach = function(client, bufnr)
-		-- 	local inlay_hint = vim.lsp.buf.inlay_hint or vim.lsp.inlay_hint
-
-		-- 	if inlay_hint ~= nil and client.supports_method("textDocument/inlayHint") then
-		-- 		inlay_hint.enable(true, { bufnr = bufnr })
-		-- 	end
-		-- end
-
 		local baseDefinitionHandler = vim.lsp.handlers["textDocument/definition"]
 
 		local filter = function(arr, fn)
@@ -121,20 +113,22 @@ return {
 
 					lspconfig.tsserver.setup({
 						capabilities = capabilities,
-						-- on_attach = on_attach,
+						on_attach = function(client, bufnr)
+							vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+						end,
 						handlers = handlers,
-						-- init_options = {
-						-- 	preferences = {
-						-- 		includeInlayEnumMemberValueHints = true,
-						-- 		includeInlayFunctionLikeReturnTypeHints = true,
-						-- 		includeInlayFunctionParameterTypeHints = true,
-						-- 		includeInlayParameterNameHints = "literal",
-						-- 		includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-						-- 		includeInlayPropertyDeclarationTypeHints = true,
-						-- 		includeInlayVariableTypeHints = false,
-						-- 		includeInlayVariableTypeHintsWhenTypeMatchesName = false,
-						-- 	},
-						-- },
+						init_options = {
+							preferences = {
+								includeInlayParameterNameHints = "none",
+								includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+								includeInlayFunctionParameterTypeHints = false,
+								includeInlayVariableTypeHints = false,
+								includeInlayVariableTypeHintsWhenTypeMatchesName = false,
+								includeInlayPropertyDeclarationTypeHints = false,
+								includeInlayFunctionLikeReturnTypeHints = true,
+								includeInlayEnumMemberValueHints = true,
+							},
+						},
 					})
 				end,
 
@@ -149,7 +143,6 @@ return {
 							},
 						},
 						on_attach = function(client, bufnr)
-							-- on_attach(client, bufnr)
 							vim.api.nvim_create_autocmd("BufWritePre", {
 								buffer = bufnr,
 								callback = function()
@@ -173,6 +166,22 @@ return {
 							Lua = {
 								diagnostics = {
 									globals = { "vim" },
+								},
+							},
+						},
+					})
+				end,
+				["rust_analyzer"] = function()
+					local lspconfig = require("lspconfig")
+					lspconfig.rust_analyzer.setup({
+						capabilities = capabilities,
+						on_attach = function(client, bufnr)
+							vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+						end,
+						settings = {
+							["rust-analyzer"] = {
+								checkOnSave = {
+									command = "clippy",
 								},
 							},
 						},
