@@ -12,7 +12,7 @@ return {
 	},
 	config = function()
 		require("telescope").setup({
-			papath_displayth_display = { "filename_first" },
+			path_display = { "filename_first" },
 			pickers = {
 				find_files = {
 					find_command = { "rg", "--files", "--iglob", "!.git", "--hidden" },
