@@ -57,7 +57,7 @@ return {
 				"lua_ls",
 				"rust_analyzer",
 				"tailwindcss",
-				"tsserver",
+				"ts_ls",
 				"yamlls",
 				-- formatter
 				"prettier",
@@ -70,16 +70,13 @@ return {
 			automatic_installation = true,
 			handlers = {
 				function(server_name)
-					if server_name == "tsserver" then
-						server_name = "ts_ls"
-					end
 					require("lspconfig")[server_name].setup({
 						capabilities = capabilities,
 						-- on_attach = on_attach,
 					})
 				end,
 
-				["tsserver"] = function()
+				["ts_ls"] = function()
 					local lspconfig = require("lspconfig")
 
 					local filterReactDTS = function(value)
