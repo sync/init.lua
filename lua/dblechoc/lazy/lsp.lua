@@ -145,15 +145,7 @@ return {
 						on_attach = function(client, bufnr)
 							vim.api.nvim_create_autocmd("BufWritePre", {
 								buffer = bufnr,
-								callback = function()
-									local diag = vim.diagnostic.get(
-										bufnr,
-										{ namespace = vim.lsp.diagnostic.get_namespace(client.id) }
-									)
-									if #diag > 0 then
-										vim.cmd("EslintFixAll")
-									end
-								end,
+								command = "EslintFixAll",
 							})
 						end,
 					})
