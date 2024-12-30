@@ -28,6 +28,9 @@ return {
 					end,
 				},
 			},
+			extensions = {
+				fzf = {},
+			},
 		})
 
 		local builtin = require("telescope.builtin")
