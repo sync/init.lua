@@ -49,6 +49,8 @@ return {
 			return filtered
 		end
 
+		local lspconfig = require("lspconfig")
+
 		require("fidget").setup()
 		require("mason").setup()
 		require("mason-tool-installer").setup({
@@ -71,15 +73,13 @@ return {
 			automatic_installation = true,
 			handlers = {
 				function(server_name)
-					require("lspconfig")[server_name].setup({
+					lspconfig[server_name].setup({
 						capabilities = capabilities,
 						-- on_attach = on_attach,
 					})
 				end,
 
 				["ts_ls"] = function()
-					local lspconfig = require("lspconfig")
-
 					local filterReactDTS = function(value)
 						if value.uri then
 							return string.match(value.uri, "%.d.ts") == nil
@@ -134,7 +134,6 @@ return {
 				end,
 
 				["eslint"] = function()
-					local lspconfig = require("lspconfig")
 					lspconfig.eslint.setup({
 						capabilities = capabilities,
 						settings = {
@@ -152,7 +151,6 @@ return {
 					})
 				end,
 				["lua_ls"] = function()
-					local lspconfig = require("lspconfig")
 					lspconfig.lua_ls.setup({
 						capabilities = capabilities,
 						settings = {
@@ -165,7 +163,6 @@ return {
 					})
 				end,
 				["rust_analyzer"] = function()
-					local lspconfig = require("lspconfig")
 					lspconfig.rust_analyzer.setup({
 						capabilities = capabilities,
 						on_attach = function(client, bufnr)
