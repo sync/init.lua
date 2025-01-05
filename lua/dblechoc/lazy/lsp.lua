@@ -32,23 +32,6 @@ return {
 			require("cmp_nvim_lsp").default_capabilities()
 		)
 
-		local baseDefinitionHandler = vim.lsp.handlers["textDocument/definition"]
-
-		local filter = function(arr, fn)
-			if type(arr) ~= "table" then
-				return arr
-			end
-
-			local filtered = {}
-			for k, v in pairs(arr) do
-				if fn(v, k, arr) then
-					table.insert(filtered, v)
-				end
-			end
-
-			return filtered
-		end
-
 		local lspconfig = require("lspconfig")
 
 		require("fidget").setup()
@@ -60,7 +43,6 @@ return {
 				"lua_ls",
 				"rust_analyzer",
 				"tailwindcss",
-				"ts_ls",
 				"yamlls",
 				-- formatter
 				"prettier",
@@ -76,60 +58,6 @@ return {
 					lspconfig[server_name].setup({
 						capabilities = capabilities,
 						-- on_attach = on_attach,
-					})
-				end,
-
-				["ts_ls"] = function()
-					local filterReactDTS = function(value)
-						if value.uri then
-							return string.match(value.uri, "%.d.ts") == nil
-						elseif value.targetUri then
-							return string.match(value.targetUri, "%.d.ts") == nil
-						end
-					end
-
-					local handlers = {
-						["textDocument/definition"] = function(err, result, method, ...)
-							if vim.tbl_islist(result) and #result > 1 then
-								local filtered_result = filter(result, filterReactDTS)
-								return baseDefinitionHandler(err, filtered_result, method, ...)
-							end
-
-							baseDefinitionHandler(err, result, method, ...)
-						end,
-						["textDocument/publishDiagnostics"] = function(_, result, ctx, config)
-							if result.diagnostics ~= nil then
-								local idx = 1
-								while idx <= #result.diagnostics do
-									if result.diagnostics[idx].code == 80001 then
-										table.remove(result.diagnostics, idx)
-									else
-										idx = idx + 1
-									end
-								end
-							end
-							vim.lsp.diagnostic.on_publish_diagnostics(_, result, ctx, config)
-						end,
-					}
-
-					lspconfig.ts_ls.setup({
-						capabilities = capabilities,
-						on_attach = function(client, bufnr)
-							vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
-						end,
-						handlers = handlers,
-						init_options = {
-							preferences = {
-								includeInlayParameterNameHints = "none",
-								includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-								includeInlayFunctionParameterTypeHints = false,
-								includeInlayVariableTypeHints = false,
-								includeInlayVariableTypeHintsWhenTypeMatchesName = false,
-								includeInlayPropertyDeclarationTypeHints = false,
-								includeInlayFunctionLikeReturnTypeHints = true,
-								includeInlayEnumMemberValueHints = true,
-							},
-						},
 					})
 				end,
 
