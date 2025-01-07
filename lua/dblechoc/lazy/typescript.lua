@@ -5,6 +5,7 @@ return {
 		"neovim/nvim-lspconfig",
 	},
 	config = function()
+		local lspconfig = require("lspconfig")
 		local api = require("typescript-tools.api")
 
 		-- local baseDefinitionHandler = vim.lsp.handlers["textDocument/definition"]
@@ -32,7 +33,15 @@ return {
 		-- 	end
 		-- end
 
+		local capabilities = vim.tbl_deep_extend(
+			"force",
+			{},
+			vim.lsp.protocol.make_client_capabilities(),
+			require("cmp_nvim_lsp").default_capabilities()
+		)
+
 		require("typescript-tools").setup({
+			capabilities = capabilities,
 			handlers = {
 				-- ["textDocument/definition"] = function(err, result, method, ...)
 				-- 	if vim.tbl_islist(result) and #result > 1 then
@@ -47,6 +56,8 @@ return {
 					{ 80001 }
 				),
 			},
+			root_dir = lspconfig.util.root_pattern("tsconfig.json", "jsconfig.json", "package.json", ".git"),
+			single_file_support = false,
 			settings = {
 				expose_as_code_action = "all",
 				jsx_close_tag = {

@@ -38,6 +38,7 @@ return {
 		require("mason").setup()
 		require("mason-tool-installer").setup({
 			ensure_installed = {
+				"denols",
 				"eslint",
 				"gopls",
 				"lua_ls",
@@ -61,6 +62,12 @@ return {
 					})
 				end,
 
+				["denols"] = function()
+					lspconfig.denols.setup({
+						capabilities = capabilities,
+						root_dir = lspconfig.util.root_pattern("deno.json", "deno.jsonc"),
+					})
+				end,
 				["eslint"] = function()
 					lspconfig.eslint.setup({
 						capabilities = capabilities,
