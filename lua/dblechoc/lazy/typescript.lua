@@ -6,7 +6,7 @@ return {
 	},
 	config = function()
 		local lspconfig = require("lspconfig")
-		-- local api = require("typescript-tools.api")
+		local api = require("typescript-tools.api")
 
 		-- local baseDefinitionHandler = vim.lsp.handlers["textDocument/definition"]
 
@@ -51,26 +51,10 @@ return {
 
 				-- 	baseDefinitionHandler(err, result, method, ...)
 				-- end,
-				-- ["textDocument/publishDiagnostics"] = api.filter_diagnostics(
-				-- 	-- Ignore 'File is a CommonJS module, it may be converted to an ES6 module.' diagnostics.
-				-- 	-- Igngore 'X is deprecated.' diagnotics
-				-- 	{ 80001, 6387 }
-				-- ),
-				["textDocument/publishDiagnostics"] = function(_, result, ctx, config)
-					if result.diagnostics ~= nil then
-						local idx = 1
-						while idx <= #result.diagnostics do
-							local diagnostic = result.diagnostics[idx]
-							-- React Navigation 6 -> 7 at spaceship (navigateDeprecated)
-							if diagnostic.code == 80001 or string.match(diagnostic.message, "navigateDeprecated") then
-								table.remove(result.diagnostics, idx)
-							else
-								idx = idx + 1
-							end
-						end
-					end
-					vim.lsp.diagnostic.on_publish_diagnostics(_, result, ctx, config)
-				end,
+				["textDocument/publishDiagnostics"] = api.filter_diagnostics(
+					-- Ignore 'File is a CommonJS module, it may be converted to an ES6 module.' diagnostics.
+					{ 80001 }
+				),
 			},
 			root_dir = lspconfig.util.root_pattern("tsconfig.json", "jsconfig.json", "package.json", ".git"),
 			single_file_support = true,
