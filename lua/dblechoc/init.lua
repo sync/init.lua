@@ -13,6 +13,8 @@ function R(name)
 	require("plenary.reload").reload_module(name)
 end
 
+vim.o.exrc = true
+
 vim.filetype.add({
 	extension = {
 		templ = "templ",

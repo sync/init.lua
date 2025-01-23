@@ -73,7 +73,7 @@ return {
 				end,
 			},
 			root_dir = lspconfig.util.root_pattern("tsconfig.json", "jsconfig.json", "package.json", ".git"),
-			single_file_support = false,
+			single_file_support = true,
 			settings = {
 				expose_as_code_action = "all",
 				jsx_close_tag = {

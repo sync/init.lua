@@ -62,12 +62,12 @@ return {
 					})
 				end,
 
-				["denols"] = function()
-					lspconfig.denols.setup({
-						capabilities = capabilities,
-						root_dir = lspconfig.util.root_pattern("deno.json", "deno.jsonc"),
-					})
-				end,
+				-- ["denols"] = function()
+				-- 	lspconfig.denols.setup({
+				-- 		capabilities = capabilities,
+				-- 		root_dir = lspconfig.util.root_pattern("deno.json", "deno.jsonc"),
+				-- 	})
+				-- end,
 				["eslint"] = function()
 					lspconfig.eslint.setup({
 						capabilities = capabilities,
