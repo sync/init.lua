@@ -103,10 +103,7 @@ return {
 								local idx = 1
 								while idx <= #result.diagnostics do
 									local diagnostic = result.diagnostics[idx]
-									if
-										diagnostic.code == 80001
-										or string.match(diagnostic.message, "navigateDeprecated")
-									then
+									if diagnostic.code == 80001 then
 										table.remove(result.diagnostics, idx)
 									else
 										idx = idx + 1
