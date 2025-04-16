@@ -57,16 +57,13 @@ return {
 			ensure_installed = {
 				"denols",
 				"eslint",
-				"gopls",
 				"lua_ls",
-				"rust_analyzer",
 				"tailwindcss",
 				"ts_ls",
 				"yamlls",
 				-- formatter
 				"prettier",
 				"stylua",
-				"goimports",
 			},
 			auto_update = false,
 		})
