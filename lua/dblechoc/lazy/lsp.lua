@@ -244,6 +244,15 @@ return {
 				focusable = false,
 				border = "rounded",
 			},
+			signs = {
+				active = true,
+				values = {
+					{ name = "DiagnosticSignError", text = signs.Error },
+					{ name = "DiagnosticSignWarn", text = signs.Warn },
+					{ name = "DiagnosticSignHint", text = signs.Hint },
+					{ name = "DiagnosticSignInfo", text = signs.Info },
+				},
+			},
 		})
 	end,
 }
