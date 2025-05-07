@@ -55,7 +55,6 @@ return {
 		require("mason").setup()
 		require("mason-tool-installer").setup({
 			ensure_installed = {
-				"denols",
 				"eslint",
 				"lua_ls",
 				"tailwindcss",
@@ -129,13 +128,6 @@ return {
 								includeInlayEnumMemberValueHints = true,
 							},
 						},
-					})
-				end,
-				["denols"] = function()
-					lspconfig.denols.setup({
-						enable = false,
-						capabilities = capabilities,
-						root_dir = lspconfig.util.root_pattern("deno.json", "deno.jsonc"),
 					})
 				end,
 				["eslint"] = function()
