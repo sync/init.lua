@@ -61,6 +61,7 @@ return {
 			end,
 		})
 
+		local base_eslint_on_attach = vim.lsp.config.eslint.on_attach
 		vim.lsp.config("eslint", {
 			settings = {
 				workingDirectories = { mode = "auto" },
@@ -68,6 +69,16 @@ return {
 					useFlatConfig = false,
 				},
 			},
+			on_attach = function(client, bufnr)
+				if base_eslint_on_attach then
+					base_eslint_on_attach(client, bufnr)
+				end
+
+				vim.api.nvim_create_autocmd("BufWritePre", {
+					buffer = bufnr,
+					command = "LspEslintFixAll",
+				})
+			end,
 		})
 
 		require("mason").setup()
