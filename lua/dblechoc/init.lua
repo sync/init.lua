@@ -55,7 +55,7 @@ local function typescript_on_definition_list(options)
 	local items = options.items
 	if #items > 1 then
 		items = filter(items, function(definition)
-			return string.match(definition.filename, "node_modules") == nil
+			return string.match(definition.filename, "node_modules/@types/react/index.d.ts") == nil
 		end)
 	end
 	vim.fn.setqflist({}, " ", { title = options.title, items = items, context = options.context })
