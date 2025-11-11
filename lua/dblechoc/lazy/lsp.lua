@@ -43,6 +43,20 @@ return {
 			},
 		})
 
+		vim.lsp.config("tailwindcssls", {
+			settings = {
+				tailwindCSS = {
+					classAttributes = {
+						"class",
+						"className",
+						"class:list",
+						"classList",
+						"ngClass",
+					},
+				},
+			},
+		})
+
 		vim.lsp.config("ts_ls", {
 			init_options = {
 				preferences = {
