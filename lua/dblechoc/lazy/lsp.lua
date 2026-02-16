@@ -96,6 +96,30 @@ return {
 			},
 		})
 
+		local base_oxlint_on_attach = vim.lsp.config.oxlint.on_attach
+		local local_oxlint = vim.fs.find("node_modules/.bin/oxlint", {
+			path = vim.fn.getcwd(),
+			upward = true,
+			type = "file",
+		})[1]
+		vim.lsp.config("oxlint", {
+			cmd = { local_oxlint or "oxlint", "--lsp" },
+			on_attach = function(client, bufnr)
+				if base_oxlint_on_attach then
+					base_oxlint_on_attach(client, bufnr)
+				end
+
+				vim.api.nvim_create_autocmd("BufWritePre", {
+					buffer = bufnr,
+					command = "LspOxlintFixAll",
+				})
+			end,
+			settings = {
+				-- run = "onType",
+				fixKind = "all",
+			},
+		})
+
 		local base_eslint_on_attach = vim.lsp.config.eslint.on_attach
 		vim.lsp.config("eslint", {
 			settings = {
@@ -121,6 +145,7 @@ return {
 			ensure_installed = {
 				"eslint",
 				"lua_ls",
+				"oxlint",
 				"tailwindcss",
 				"ts_ls",
 				"yamlls",
