@@ -57,7 +57,7 @@ return {
 			},
 		})
 
-		vim.lsp.config("ts_ls", {
+		vim.lsp.config("tsgo", {
 			init_options = {
 				preferences = {
 					includeInlayParameterNameHints = "none",
@@ -73,28 +73,8 @@ return {
 			on_attach = function(client, bufnr)
 				vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
 			end,
-			handlers = {
-				["textDocument/publishDiagnostics"] = function(err, result, ctx, config)
-					if err then
-						vim.notify("[lsp] Error on publishDiagnostics: " .. vim.inspect(err), vim.log.levels.ERROR)
-						return
-					end
-					if result == nil or result.diagnostics == nil then
-						return
-					end
-
-					-- Filter out diagnostics matching the pattern by removing them in place
-					for i = #result.diagnostics, 1, -1 do
-						if string.find(result.diagnostics[i].message, "navigateDeprecated", 1, true) then
-							table.remove(result.diagnostics, i)
-						end
-					end
-
-					-- Call the default handler with filtered diagnostics
-					vim.lsp.diagnostic.on_publish_diagnostics(err, result, ctx, config)
-				end,
-			},
 		})
+		vim.lsp.enable("tsgo")
 
 		local base_oxlint_on_attach = vim.lsp.config.oxlint.on_attach
 		local local_oxlint = vim.fs.find("node_modules/.bin/oxlint", {
@@ -147,7 +127,7 @@ return {
 				"lua_ls",
 				"oxlint",
 				"tailwindcss",
-				"ts_ls",
+				-- "ts_ls", -- replaced by tsgo
 				"yamlls",
 				-- formatter
 				"prettier",
