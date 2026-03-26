@@ -128,6 +128,7 @@ return {
 				"oxlint",
 				"tailwindcss",
 				-- "ts_ls", -- replaced by tsgo
+				"tsgo",
 				"yamlls",
 				-- formatter
 				"prettier",
