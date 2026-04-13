@@ -11,7 +11,6 @@ return {
 		"L3MON4D3/LuaSnip",
 		"saadparwaiz1/cmp_luasnip",
 		"j-hui/fidget.nvim",
-		"zbirenbaum/copilot-cmp",
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
 		"onsails/lspkind.nvim",
 	},
@@ -157,13 +156,12 @@ return {
 						menu = 50, -- leading text (labelDetails)
 						abbr = 50, -- actual suggestion item
 					},
-					symbol_map = { Copilot = "" },
 					ellipsis_char = "...",
 					show_labelDetails = true,
 
 					before = function(entry, vim_item)
 						vim_item.kind = "" -- remove kind text
-						local labels = { nvim_lsp = "λ", copilot = "", luasnip = "✂", buffer = "▤" }
+						local labels = { nvim_lsp = "λ", luasnip = "✂", buffer = "▤" }
 						vim_item.menu = labels[entry.source.name] or ""
 						return vim_item
 					end,
@@ -189,7 +187,6 @@ return {
 			}),
 			sources = cmp.config.sources({
 				{ name = "nvim_lsp" },
-				{ name = "copilot" },
 				{ name = "luasnip" },
 			}, {
 				{ name = "buffer" },
