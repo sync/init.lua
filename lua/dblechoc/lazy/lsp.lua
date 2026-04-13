@@ -74,6 +74,7 @@ return {
 			end,
 		})
 		vim.lsp.enable("tsgo")
+		vim.lsp.enable("sourcekit")
 
 		local base_oxlint_on_attach = vim.lsp.config.oxlint.on_attach
 		local local_oxlint = vim.fs.find("node_modules/.bin/oxlint", {
@@ -125,6 +126,7 @@ return {
 				"eslint",
 				"lua_ls",
 				"oxlint",
+				"oxfmt",
 				"tailwindcss",
 				-- "ts_ls", -- replaced by tsgo
 				"tsgo",
