@@ -74,6 +74,7 @@ return {
 			end,
 		})
 		vim.lsp.enable("tsgo")
+		vim.lsp.enable("kotlin_language_server")
 		vim.lsp.enable("sourcekit")
 
 		local base_oxlint_on_attach = vim.lsp.config.oxlint.on_attach
@@ -124,6 +125,7 @@ return {
 		require("mason-tool-installer").setup({
 			ensure_installed = {
 				"eslint",
+				"kotlin-language-server",
 				"lua_ls",
 				"oxlint",
 				"oxfmt",
