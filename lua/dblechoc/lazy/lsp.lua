@@ -74,6 +74,19 @@ return {
 			end,
 		})
 		vim.lsp.enable("tsgo")
+
+		vim.lsp.config("kotlin_language_server", {
+			init_options = {
+				storagePath = vim.fs.root(vim.fn.expand("%:p:h"), {
+					"settings.gradle",
+					"settings.gradle.kts",
+					"build.xml",
+					"pom.xml",
+					"build.gradle",
+					"build.gradle.kts",
+				}) or (vim.fn.stdpath("cache") .. "/kotlin-language-server"),
+			},
+		})
 		vim.lsp.enable("kotlin_language_server")
 		vim.lsp.enable("sourcekit")
 
