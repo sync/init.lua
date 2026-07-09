@@ -2,7 +2,11 @@ return {
 	"mason-org/mason-lspconfig.nvim",
 	dependencies = {
 		"mason-org/mason.nvim",
-		"neovim/nvim-lspconfig",
+		{
+			"sync/nvim-lspconfig",
+			name = "nvim-lspconfig",
+			branch = "tsgo-to-tsc",
+		},
 		"hrsh7th/cmp-nvim-lsp",
 		"hrsh7th/cmp-buffer",
 		"hrsh7th/cmp-path",
@@ -117,8 +121,6 @@ return {
 				"kotlin-language-server",
 				"lua_ls",
 				"tailwindcss",
-				-- "ts_ls", -- replaced by tsgo
-				"tsgo",
 				"yamlls",
 				-- formatter
 				"prettier",
