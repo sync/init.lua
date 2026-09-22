@@ -2,11 +2,7 @@ return {
 	"mason-org/mason-lspconfig.nvim",
 	dependencies = {
 		"mason-org/mason.nvim",
-		{
-			"sync/nvim-lspconfig",
-			name = "nvim-lspconfig",
-			branch = "tsgo-to-tsc",
-		},
+		"neovim/nvim-lspconfig",
 		"hrsh7th/cmp-nvim-lsp",
 		"hrsh7th/cmp-buffer",
 		"hrsh7th/cmp-path",
@@ -60,24 +56,27 @@ return {
 			},
 		})
 
-		vim.lsp.config("tsgo", {
-			init_options = {
-				preferences = {
-					includeInlayParameterNameHints = "none",
-					includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-					includeInlayFunctionParameterTypeHints = false,
-					includeInlayVariableTypeHints = false,
-					includeInlayVariableTypeHintsWhenTypeMatchesName = false,
-					includeInlayPropertyDeclarationTypeHints = false,
-					includeInlayFunctionLikeReturnTypeHints = true,
-					includeInlayEnumMemberValueHints = true,
+		vim.lsp.config("tsc", {
+			settings = {
+				["js/ts"] = {
+					inlayHints = {
+						parameterNames = {
+							enabled = "none",
+							suppressWhenArgumentMatchesName = false,
+						},
+						parameterTypes = { enabled = false },
+						variableTypes = { enabled = false, suppressWhenTypeMatchesName = false },
+						propertyDeclarationTypes = { enabled = false },
+						functionLikeReturnTypes = { enabled = true },
+						enumMemberValues = { enabled = true },
+					},
 				},
 			},
 			on_attach = function(client, bufnr)
 				vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
 			end,
 		})
-		vim.lsp.enable("tsgo")
+		vim.lsp.enable("tsc")
 
 		vim.lsp.config("kotlin_language_server", {
 			init_options = {
@@ -122,6 +121,7 @@ return {
 				"lua_ls",
 				"tailwindcss",
 				"yamlls",
+				"tsc",
 				-- formatter
 				"prettier",
 				"stylua",
