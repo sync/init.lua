@@ -154,10 +154,12 @@ return {
 				"eslint",
 				"kotlin-language-server",
 				"lua_ls",
+				"oxlint",
 				"tailwindcss",
 				"yamlls",
 				"tsc",
 				-- formatter
+				"oxfmt",
 				"prettier",
 				"stylua",
 			},
@@ -167,6 +169,7 @@ return {
 		require("mason-lspconfig").setup({
 			ensure_installed = {},
 			automatic_installation = false,
+			automatic_enable = { exclude = { "oxfmt" } },
 		})
 
 		local lspkind = require("lspkind")
