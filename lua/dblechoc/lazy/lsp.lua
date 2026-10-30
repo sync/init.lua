@@ -93,13 +93,48 @@ return {
 		vim.lsp.enable("kotlin_language_server")
 		vim.lsp.enable("sourcekit")
 
+		local oxc = require("dblechoc.oxc")
+		local base_oxlint_on_attach = vim.lsp.config.oxlint.on_attach
+		vim.lsp.config("oxlint", {
+			workspace_required = true,
+			root_dir = function(bufnr, on_dir)
+				local root = oxc.root(vim.api.nvim_buf_get_name(bufnr), "oxlint")
+				if root and vim.fn.executable(oxc.command(root, "oxlint")) == 1 then
+					on_dir(root)
+				end
+			end,
+			cmd = function(dispatchers, config)
+				return vim.lsp.rpc.start({ oxc.command(config.root_dir, "oxlint"), "--lsp" }, dispatchers, {
+					cwd = config.root_dir,
+				})
+			end,
+			on_attach = function(client, bufnr)
+				if base_oxlint_on_attach then
+					base_oxlint_on_attach(client, bufnr)
+				end
+				vim.api.nvim_create_autocmd("BufWritePre", {
+					buffer = bufnr,
+					callback = function()
+						client:request_sync("workspace/executeCommand", {
+							command = "oxc.fixAll",
+							arguments = { { uri = vim.uri_from_bufnr(bufnr) } },
+						}, 1000, bufnr)
+					end,
+				})
+			end,
+		})
+		vim.lsp.enable("oxlint")
+
 		local base_eslint_on_attach = vim.lsp.config.eslint.on_attach
+		local base_eslint_root_dir = vim.lsp.config.eslint.root_dir
 		vim.lsp.config("eslint", {
+			root_dir = function(bufnr, on_dir)
+				if not oxc.root(vim.api.nvim_buf_get_name(bufnr), "oxlint") then
+					base_eslint_root_dir(bufnr, on_dir)
+				end
+			end,
 			settings = {
 				workingDirectories = { mode = "auto" },
-				experimental = {
-					useFlatConfig = false,
-				},
 			},
 			on_attach = function(client, bufnr)
 				if base_eslint_on_attach then
